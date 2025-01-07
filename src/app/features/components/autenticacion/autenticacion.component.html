@@ -1,0 +1,27 @@
+<div class="login-container">
+  <mat-card class="login-card">
+    <mat-card-header>
+      <mat-card-title>Iniciar Sesión</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <mat-form-field class="full-width">
+          <mat-label>Usuario</mat-label>
+          <input matInput formControlName="username" placeholder="Ingresa tu usuario" />
+          <mat-error *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched">
+            El usuario es requerido.
+          </mat-error>
+        </mat-form-field>
+        <br>
+        <mat-form-field class="full-width">
+          <mat-label>Contraseña</mat-label>
+          <input matInput type="password" formControlName="password" placeholder="Ingresa tu contraseña" />
+        </mat-form-field>
+        <br>
+        <button mat-raised-button color="primary" class="full-width" type="submit" [disabled]="loginForm.invalid">
+          Iniciar Sesión
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

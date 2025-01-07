@@ -1,0 +1,25 @@
+<div class="dashboard-container">
+  <mat-card class="indicator-card">
+    <app-indicadores
+      [titulo]="'Total de Salas'"
+      [valor]="totalSalas"
+      [icono]="'theaters'">
+    </app-indicadores>
+  </mat-card>
+
+  <mat-card class="indicator-card">
+    <app-indicadores
+      [titulo]="'Salas Disponibles'"
+      [valor]="salasDisponibles"
+      [icono]="'check_circle'">
+    </app-indicadores>
+  </mat-card>
+
+  <mat-card class="indicator-card">
+    <app-indicadores
+      [titulo]="'Total de Películas'"
+      [valor]="totalPeliculas"
+      [icono]="'movie'">
+    </app-indicadores>
+  </mat-card>
+</div>

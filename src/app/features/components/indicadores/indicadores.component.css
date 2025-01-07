@@ -1,0 +1,21 @@
+.indicador-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+}
+
+.indicador-header {
+  display: flex;
+  align-items: center;
+}
+
+mat-icon {
+  margin-right: 16px;
+  font-size: 36px;
+}
+
+.indicador-value {
+  font-size: 24px;
+  font-weight: bold;
+}

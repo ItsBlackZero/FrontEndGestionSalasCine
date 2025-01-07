@@ -1,0 +1,13 @@
+
+<button mat-raised-button color="primary" (click)="crearSala()">Crear Salas Cine</button>
+<div class="peliculas-container">
+  <mat-card *ngFor="let salas of salas" class="pelicula-card">
+    <mat-card-header>
+      <mat-card-title>{{ salas.nombre }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>Estado: {{ salas.estado }}</p>
+      <button mat-raised-button color="accent" (click)="editarSala(salas)">Editar</button>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,0 +1,13 @@
+
+<button mat-raised-button color="primary" (click)="crearPelicula()">Crear Película</button>
+<div class="peliculas-container">
+  <mat-card *ngFor="let pelicula of peliculas" class="pelicula-card">
+    <mat-card-header>
+      <mat-card-title>{{ pelicula.nombre }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>Duración: {{ pelicula.duracion }} minutos</p>
+      <button mat-raised-button color="accent" (click)="editarPelicula(pelicula)">Editar</button>
+    </mat-card-content>
+  </mat-card>
+</div>
