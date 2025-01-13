@@ -24,10 +24,7 @@ export class PeliculasService {
     });
   }
 
-  agregarPelicula(pelicula: {
-    nombre: string;
-    duracion: number;
-  }): Observable<Pelicula> {
+  agregarPelicula(pelicula: Pelicula): Observable<Pelicula> {
     return this.http.post<Pelicula>(this.peliculaUrl, pelicula);
   }
 

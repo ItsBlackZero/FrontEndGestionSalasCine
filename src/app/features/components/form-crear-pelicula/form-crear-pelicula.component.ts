@@ -25,7 +25,7 @@ export class FormCrearPeliculaComponent {
 
     this.peliculaForm = this.fb.group({
       idPelicula: [this.pelicula ? this.pelicula.idPelicula : ''],
-      estado: [this.pelicula ? this.pelicula.estado : ''],
+      estado: [this.pelicula ? this.pelicula.estado : '1'],
       nombre: [this.pelicula ? this.pelicula.nombre : '', [Validators.required, Validators.minLength(3)]],
       duracion: [this.pelicula ? this.pelicula.duracion : '', [Validators.required, Validators.pattern('^[0-9]*$')]]
     });

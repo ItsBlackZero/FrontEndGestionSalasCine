@@ -25,7 +25,7 @@ export class FormSalasComponent {
     this.salasForm = this.fb.group({
       idSalaCine: [this.sala ? this.sala.idSalaCine : ''],
       nombre: [this.sala ? this.sala.nombre : '', [Validators.required]],
-      estado: [this.sala ? this.sala.estado : '', [Validators.required]]
+      estado: [this.sala ? this.sala.estado : '1']
     });
   }
 

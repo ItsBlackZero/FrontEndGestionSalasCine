@@ -1,6 +1,6 @@
 export interface Pelicula {
-  idPelicula:number;
-  nombre: string;
-  duracion: number;
-  estado:number;
+  idPelicula?:number;
+  nombre?: string;
+  duracion?: number;
+  estado?:number;
 }

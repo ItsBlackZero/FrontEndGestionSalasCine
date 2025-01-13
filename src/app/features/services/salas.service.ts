@@ -26,10 +26,7 @@ export class SalasService {
     });
   }
 
-  agregarSalas(salas: {
-    nombre: string;
-    duracion: number;
-  }): Observable<SalaCine> {
+  agregarSalas(salas: SalaCine): Observable<SalaCine> {
     return this.http.post<SalaCine>(this.salasUrl, salas);
   }
 

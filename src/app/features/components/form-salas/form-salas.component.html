@@ -15,16 +15,6 @@
             La sala debe tener al menos 3 caracteres.
           </mat-error>
         </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>Estado</mat-label>
-          <input matInput formControlName="estado" required>
-          <mat-error *ngIf="salasForm.get('estado')?.hasError('required')">
-          El Estado es obligatoria.
-          </mat-error>
-          <mat-error *ngIf="salasForm.get('estado')?.hasError('pattern')">
-             (solo números).
-          </mat-error>
-        </mat-form-field>
         <br>
         <button mat-raised-button color="primary" type="submit" [disabled]="salasForm.invalid">
           {{ editMode ? 'Actualizar' : 'Agregar' }}

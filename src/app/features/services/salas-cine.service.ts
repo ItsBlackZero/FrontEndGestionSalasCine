@@ -18,9 +18,8 @@ export class SalasCineService {
   asignarPeliculaSala(
     peliculaSalaCine: PeliculaSalaCine
   ): Observable<PeliculaSalaCine> {
-    return this.http.post<PeliculaSalaCine>(
-      this.peliculaSalaCineUrl,
-      peliculaSalaCine
-    );
+    console.log({peliculaSalaCine});
+
+    return this.http.post<PeliculaSalaCine>(this.peliculaSalaCineUrl,peliculaSalaCine);
   }
 }

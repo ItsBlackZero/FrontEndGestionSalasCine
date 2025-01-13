@@ -6,6 +6,7 @@ import { share } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { FormCrearPeliculaComponent } from '../form-crear-pelicula/form-crear-pelicula.component';
 import { PeliculasService } from '../../services/peliculas.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-peliculas',
@@ -15,12 +16,18 @@ import { PeliculasService } from '../../services/peliculas.service';
 export class PeliculasComponent implements OnInit {
 
   peliculas?:Pelicula[];
-
-  constructor(private peliculasService:PeliculasService,private modal:MatDialog) {
+  private logueado:boolean;
+  constructor(private peliculasService: PeliculasService, private sharedService: SharedService, private modal: MatDialog, private router: Router) {
+    this.logueado = this.sharedService.isLogueado
   }
 
 
   ngOnInit(): void {
+    if (!this.logueado) {
+      console.log('entro');
+
+      this.router.navigate(['']);
+    }
     this.cargarDatosPeliculas();
   }
 

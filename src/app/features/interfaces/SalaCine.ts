@@ -1,5 +1,5 @@
 export interface SalaCine{
-  idSalaCine:number;
-  nombre:string;
-  estado:number;
+  idSalaCine?:number;
+  nombre?:string;
+  estado?:number;
 }

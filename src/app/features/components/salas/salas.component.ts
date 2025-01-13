@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { FormCrearPeliculaComponent } from '../form-crear-pelicula/form-crear-pelicula.component';
 import { FormSalasComponent } from '../form-salas/form-salas.component';
 import { SalasService } from '../../services/salas.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-salas',
@@ -14,10 +15,16 @@ import { SalasService } from '../../services/salas.service';
 export class SalasComponent implements OnInit{
 
   salas?:SalaCine[];
-
-    constructor(private salasService:SalasService,private modal:MatDialog) {
+  private logueado:boolean;
+    constructor(private salasService:SalasService,private modal:MatDialog,private sharedService:SharedService,private router:Router) {
+      this.logueado = this.sharedService.isLogueado
     }
     ngOnInit(): void {
+      if (!this.logueado) {
+        console.log('entro');
+
+        this.router.navigate(['']);
+      }
       this.cargarDatosSalas();
     }
     cargarDatosSalas() {

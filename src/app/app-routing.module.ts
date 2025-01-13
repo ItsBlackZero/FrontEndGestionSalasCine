@@ -7,6 +7,10 @@ import { PaginaBlancoComponent } from './shared/pages/pagina-blanco/pagina-blanc
 const routes: Routes = [
 
   {
+    path:'',
+    component: PaginaBlancoComponent
+  },
+  {
     path: 'menu',
     loadChildren: () => import('./features/features.module').then(m => m.FeaturesModule)
   },

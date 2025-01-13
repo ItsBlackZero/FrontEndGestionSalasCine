@@ -19,7 +19,7 @@
       <button mat-flat-button (click)="iniciarSesion()" *ngIf="!logueado"  routerLinkActive="active-link">
         Iniciar Sesión
       </button>
-      <button mat-flat-button *ngIf="logueado"  routerLinkActive="active-link">
+      <button mat-flat-button *ngIf="logueado" (click)="cerrarSesion()"  routerLinkActive="active-link">
         Cerrar Sesión
       </button>
     </mat-toolbar>

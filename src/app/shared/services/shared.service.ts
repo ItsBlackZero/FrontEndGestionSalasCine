@@ -36,4 +36,7 @@ export class SharedService {
   setLogueado(logueado:boolean):void{
     this.logueadoSubject.next(logueado)
   }
+  get isLogueado(): boolean {
+    return this.logueadoSubject.value;
+  }
 }
