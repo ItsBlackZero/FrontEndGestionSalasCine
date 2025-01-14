@@ -30,7 +30,7 @@
     <ng-container matColumnDef="pelicula">
       <th mat-header-cell *matHeaderCellDef> Película </th>
       <td mat-cell *matCellDef="let asignacion">
-        {{ asignacion.pelicula?.nombre || 'Película no disponible' }}
+        {{ asignacion.nombrePelicula || 'Película no disponible' }}
       </td>
     </ng-container>
 

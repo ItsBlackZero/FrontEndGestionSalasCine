@@ -1,7 +1,10 @@
-import { Component, Inject } from '@angular/core';
+import { ApiRequestBodyPelicula  } from './../../interfaces/Pelicula';
+import { Component, Inject, numberAttribute } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { PeliculasService } from '../../services/peliculas.service';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { ApiRequestBody, ApiResponse } from '../../interfaces/SalaCine';
 
 @Component({
   selector: 'app-form-crear-pelicula',
@@ -13,11 +16,12 @@ export class FormCrearPeliculaComponent {
   peliculaForm: FormGroup;
   editMode: boolean;
   pelicula: any;
-
+  peliculaData?:ApiRequestBodyPelicula;
   constructor(
     private fb: FormBuilder,
     private peliculaService:PeliculasService,
     private dialogRef: MatDialogRef<FormCrearPeliculaComponent>,
+    private toastr:ToastrService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.editMode = data.editMode;
@@ -30,30 +34,49 @@ export class FormCrearPeliculaComponent {
       duracion: [this.pelicula ? this.pelicula.duracion : '', [Validators.required, Validators.pattern('^[0-9]*$')]]
     });
   }
+  updatePeliculaData() {
+    this.peliculaData = {
+      body: {
+        idPelicula:Number(this.peliculaForm.get('idPelicula')?.value),
+        nombre: this.peliculaForm.get('nombre')?.value,
+        duracion: Number(this.peliculaForm.get('duracion')?.value),
+        estado: Number(this.peliculaForm.get('estado')?.value),
+      }
+    };
+  }
 
   onSubmit(): void {
+    this.updatePeliculaData()
     if (this.peliculaForm.valid) {
       if (this.editMode) {
-        console.log('Actualizando película', this.peliculaForm.value);
-        this.peliculaService.editarPelicula(this.peliculaForm.value).subscribe(
+        this.peliculaService.editarPelicula(this.peliculaData!).subscribe(
           respuesta => {
-            console.log("Pelicula Editada");
+            this.toastr.success('Pelicula editada', 'Success',{
+              timeOut: 3000,
+              positionClass: 'toast-top-right',
+            })
 
           },
           error =>
-            console.error('Error al editar la pelicula', error)
+            this.toastr.error(error.message, 'Success',{
+              timeOut: 3000,
+              positionClass: 'toast-top-right',
+            })
         )
       } else {
-        console.log(this.editMode);
-
-        console.log(this.peliculaForm.value)
-        this.peliculaService.agregarPelicula(this.peliculaForm.value).subscribe(
+        this.peliculaService.agregarPelicula(this.peliculaData!).subscribe(
           respuesta => {
-            console.log("Pelicula Agregada");
+            this.toastr.success('Registro creado', 'Success',{
+              timeOut: 3000,
+              positionClass: 'toast-top-right',
+            })
 
           },
           error =>
-            console.error('Error al agregar la pelicula', error)
+            this.toastr.error('Error al crear el registro', 'Error',{
+              timeOut: 3000,
+              positionClass: 'toast-top-right',
+            })
         )
       }
       this.dialogRef.close();

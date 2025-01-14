@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
-import { SalaCine } from '../interfaces/SalaCine';
+import { catchError, map, Observable, of } from 'rxjs';
+import { ApiRequestBody, ApiResponse, SalaCine } from '../interfaces/SalaCine';
+import { environment } from '../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
@@ -9,32 +10,38 @@ import { SalaCine } from '../interfaces/SalaCine';
 export class SalasService {
   totalSalas: number = 0;
 
-  private salasUrl = 'http://localhost:8080/sala-cine';
-  private editarSalaCine = 'http://localhost:8080/sala-cine/editar';
+  private salasUrl = environment.API_SALAS;
+  private editarSalaCine = `${this.salasUrl}/editar`;
 
   constructor(private http: HttpClient) {}
 
-  obtenerSalas(): Observable<SalaCine[]> {
-    return this.http.get<SalaCine[]>(this.salasUrl);
+  obtenerSalas(): Observable<ApiResponse> {
+    return this.http.get<ApiResponse>(this.salasUrl).pipe(
+      catchError((error) => {
+        console.error('Error al obtener las salas:', error);
+        return of({ status: 'error', message: 'Hubo un problema al obtener las salas', data: [] });
+      })
+    );
   }
 
   cargarDatos() {
     this.obtenerSalas().subscribe((data) => {
-      this.totalSalas = data.length;
+      // this.totalSalas = data.length;
 
       console.log('Total Salas:', this.totalSalas);
     });
   }
 
-  agregarSalas(salas: SalaCine): Observable<SalaCine> {
-    return this.http.post<SalaCine>(this.salasUrl, salas);
+  agregarSalas(salas: ApiRequestBody): Observable<ApiRequestBody> {
+
+    return this.http.post<ApiRequestBody>(this.salasUrl, salas);
   }
 
-  editarSalas(sala: SalaCine): Observable<SalaCine> {
+  editarSalas(sala: ApiRequestBody): Observable<ApiRequestBody> {
     console.log({ sala });
 
-    return this.http.put<SalaCine>(
-      `${this.editarSalaCine}/${sala.idSalaCine}`,
+    return this.http.put<ApiRequestBody>(
+      `${this.editarSalaCine}/${sala.body.idSalaCine}`,
       sala
     );
   }

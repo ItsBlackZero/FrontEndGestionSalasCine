@@ -19,6 +19,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { PeliculasSalaCineComponent } from './components/peliculas-sala-cine/peliculas-sala-cine.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -41,11 +42,15 @@ import { MatTableModule } from '@angular/material/table';
     MatIconModule,
     FeaturesRoutingModule,
     MatSelectModule,
-    MatTableModule
+    MatTableModule,
+    ToastrModule.forRoot()
+
 
   ],
   exports:[
     AutenticacionComponent,
+    DashboardComponent,
+
   ]
 })
 export class FeaturesModule { }

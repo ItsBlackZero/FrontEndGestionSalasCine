@@ -6,6 +6,7 @@ import { FormCrearPeliculaComponent } from '../form-crear-pelicula/form-crear-pe
 import { FormSalasComponent } from '../form-salas/form-salas.component';
 import { SalasService } from '../../services/salas.service';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-salas',
@@ -16,7 +17,7 @@ export class SalasComponent implements OnInit{
 
   salas?:SalaCine[];
   private logueado:boolean;
-    constructor(private salasService:SalasService,private modal:MatDialog,private sharedService:SharedService,private router:Router) {
+    constructor(private salasService:SalasService,private toastr:ToastrService,private modal:MatDialog,private sharedService:SharedService,private router:Router) {
       this.logueado = this.sharedService.isLogueado
     }
     ngOnInit(): void {
@@ -28,9 +29,21 @@ export class SalasComponent implements OnInit{
       this.cargarDatosSalas();
     }
     cargarDatosSalas() {
-      this.salasService.obtenerSalas().subscribe(salas => {
-        console.log({salas});
-        this.salas = salas;
+      this.salasService.obtenerSalas().subscribe(response => {
+        const data = response.data;
+
+        if(response.status === 'success'){
+          this.salas = data;
+          this.toastr.success(response.message, 'Success',{
+            timeOut: 3000,
+            positionClass: 'toast-top-right',
+          })
+        }else{
+          this.toastr.error(response.message, 'Error',{
+            timeOut: 3000,
+            positionClass: 'toast-top-right',
+          })
+        }
       });
     }
     crearSala():void{
@@ -44,7 +57,6 @@ export class SalasComponent implements OnInit{
       });
     }
     editarSala(salas:SalaCine):void{
-        console.log({salas});
         const dialogRef = this.modal.open(FormSalasComponent, {
           data: {
             editMode: true,

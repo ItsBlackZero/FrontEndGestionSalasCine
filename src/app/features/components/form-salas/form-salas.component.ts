@@ -2,6 +2,8 @@ import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SalasService } from '../../services/salas.service';
+import { ApiRequestBody } from '../../interfaces/SalaCine';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-form-salas',
@@ -12,11 +14,13 @@ export class FormSalasComponent {
   salasForm: FormGroup;
   editMode: boolean;
   sala: any;
+  salaCineData?:ApiRequestBody
 
   constructor(
     private fb: FormBuilder,
     private salasService:SalasService,
     private dialogRef: MatDialogRef<FormSalasComponent>,
+    private toastr:ToastrService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.editMode = data.editMode;
@@ -29,29 +33,48 @@ export class FormSalasComponent {
     });
   }
 
+  updateSalaCine() {
+    this.salaCineData = {
+      body: {
+        idSalaCine:Number(this.salasForm.get('idSalaCine')?.value),
+        nombre: this.salasForm.get('nombre')?.value,
+        estado: Number(this.salasForm.get('estado')?.value),
+      }
+    };
+  }
+
   onSubmit(): void {
+    this.updateSalaCine();
     if (this.editMode) {
-      console.log('Actualizando Salas', this.salasForm.value);
-      this.salasService.editarSalas(this.salasForm.value).subscribe(
+      this.salasService.editarSalas(this.salaCineData!).subscribe(
         respuesta => {
-          console.log("Sala Editada");
+          this.toastr.success('Pelicula editada', 'Success',{
+            timeOut: 3000,
+            positionClass: 'toast-top-right',
+          })
 
         },
         error =>
-          console.error('Error al editar la sala', error)
+          this.toastr.error(error.message, 'Success',{
+            timeOut: 3000,
+            positionClass: 'toast-top-right',
+          })
       )
     } else {
-      console.log(this.editMode);
-
-      console.log(this.salasForm.value)
-      this.salasService.agregarSalas(this.salasForm.value).subscribe(
+      this.salasService.agregarSalas(this.salaCineData!).subscribe(
         respuesta => {
-          console.log("Sala Agregada");
+          this.toastr.success('Registro creado', 'Success',{
+            timeOut: 3000,
+            positionClass: 'toast-top-right',
+          })
 
         },
         error =>
-          console.error('Error al agregar la sala', error)
-      )
+          this.toastr.error('Error al crear el registro', 'Error',{
+            timeOut: 3000,
+            positionClass: 'toast-top-right',
+          })
+        )
     }
     this.dialogRef.close();
   }

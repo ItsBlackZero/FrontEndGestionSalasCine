@@ -2,13 +2,14 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PeliculasService } from '../../services/peliculas.service';
 import { SalasService } from '../../services/salas.service';
-import { Pelicula } from '../../interfaces/Pelicula';
-import { SalaCine } from '../../interfaces/SalaCine';
-import { PeliculaSalaCine } from '../../interfaces/PeliculaSalaCine';
+import { ApiRequestBodyPelicula, ApiResponsePelicula, Pelicula } from '../../interfaces/Pelicula';
+import { ApiResponse, SalaCine } from '../../interfaces/SalaCine';
+import { ApiRequestBodyPeliculaSalas, ApiResponseSalasPeliculas, PeliculaSalaCine } from '../../interfaces/PeliculaSalaCine';
 import { SalasCineService } from '../../services/salas-cine.service';
 import { SharedService } from '../../../shared/services/shared.service';
 import { Route, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-peliculas-sala-cine',
@@ -32,7 +33,8 @@ export class PeliculasSalaCineComponent {
     private peliculasSalasService: SalasCineService,
     private sharedService:SharedService,
     private router:Router,
-    private dataPipe:DatePipe
+    private dataPipe:DatePipe,
+    private toastr:ToastrService
   ) {
     this.logueado=this.sharedService.isLogueado
     this.asignacionForm = this.fb.group({
@@ -44,8 +46,6 @@ export class PeliculasSalaCineComponent {
 
   ngOnInit(): void {
     if (!this.logueado) {
-      console.log('entro');
-
       this.router.navigate(['']);
     }
     this.cargarDatosPeliculas();
@@ -54,32 +54,77 @@ export class PeliculasSalaCineComponent {
   }
 
   cargarDatosPeliculas() {
-    this.peliculasService.obtenerPeliculas().subscribe(peliculas => {
-      console.log({peliculas});
-      this.peliculas = peliculas;
+    this.peliculasService.obtenerPeliculas().subscribe((response:ApiResponsePelicula) => {
+      // console.log({response});
+      const data = response.data;
+      if(response.status === 'success'){
+        this.peliculas = data;
+        this.toastr.success(response.message, 'Success',{
+          timeOut: 3000,
+          positionClass: 'toast-top-right',
+        })
+      }else{
+        this.toastr.error(response.message, 'Error',{
+          timeOut: 3000,
+          positionClass: 'toast-top-right',
+        })
+      }
     });
   }
 
   cargarDatosSalas() {
-    this.salasService.obtenerSalas().subscribe(salas => {
-      console.log({salas});
-      this.salas = salas;
+    this.salasService.obtenerSalas().subscribe((response:ApiResponse) => {
+      // this.salas = salas;
+      const data = response.data;
+
+      if(response.status === 'success'){
+        this.salas = data;
+        this.toastr.success(response.message, 'Success',{
+          timeOut: 3000,
+          positionClass: 'toast-top-right',
+        })
+      }else{
+        this.toastr.error(response.message, 'Error',{
+          timeOut: 3000,
+          positionClass: 'toast-top-right',
+        })
+      }
+
     });
   }
 
   cargarAsignaciones() {
-    this.peliculaSalaCine.obtenerPeliculasSalaCine().subscribe((response: PeliculaSalaCine[]) => {
-      console.log({ response });
-      this.asignaciones = response.map(asignacion => ({
-        idPeliculaSala: asignacion.idPeliculaSala,
-        idSalaCine: asignacion.salaCine?.idSalaCine,
-        idPelicula: asignacion.pelicula?.idPelicula,
-        pelicula: asignacion.pelicula,
-        salaCine: asignacion.salaCine,
-        fechaPublicacion: asignacion.fechaPublicacion,
-        fechaFin: asignacion.fechaFin,
-      }));
-      console.log(this.asignaciones);
+    this.peliculaSalaCine.obtenerPeliculasSalaCine().subscribe((response: ApiResponseSalasPeliculas) => {
+
+      console.log({response});
+
+      if(response.status === 'success'){
+        this.asignaciones = response.data.map(asignacion => ({
+
+
+          idPeliculaSala: asignacion.idPeliculaSala,
+          idSalaCine: asignacion.salaCine?.idSalaCine,
+          idPelicula: asignacion.pelicula?.idPelicula,
+          nombrePelicula: asignacion.pelicula?.nombre,
+          duracionPelicula: asignacion.pelicula?.duracion,
+          estadoPelicula: asignacion.pelicula?.estado,
+          nombreSalaCine: asignacion.salaCine?.nombre,
+          estadoSalaCine: asignacion.salaCine?.estado,
+          fechaPublicacion: asignacion.fechaPublicacion,
+          fechaFin: asignacion.fechaFin
+        })
+        );
+        this.toastr.success(response.message, 'Success',{
+          timeOut: 3000,
+          positionClass: 'toast-top-right',
+        })
+      }else{
+        this.toastr.error(response.message, 'Error',{
+          timeOut: 3000,
+          positionClass: 'toast-top-right',
+        })
+      }
+
     });
   }
 
@@ -91,17 +136,18 @@ export class PeliculasSalaCineComponent {
     const fechaActual = new Date() ;
     if (this.asignacionForm.valid) {
       const asignacion = this.asignacionForm.value;
-      const peliculaSalaCine: PeliculaSalaCine = {
-        pelicula: {
-          idPelicula: asignacion.idPelicula,
-        },
-        salaCine: {
-          idSalaCine: asignacion.idSalaCine,
-        },
-        fechaPublicacion: this.dataPipe.transform(fechaActual, 'yyyy-MM-dd') || '',
-        fechaFin: this.dataPipe.transform(fechaActual, 'yyyy-MM-dd') || '',
+      const peliculaSalaCine: ApiRequestBodyPeliculaSalas = {
+        body: {
+          pelicula: {
+            idPelicula: asignacion.idPelicula,
+          },
+          salaCine: {
+            idSalaCine: asignacion.idSalaCine,
+          },
+          fechaPublicacion: this.dataPipe.transform(fechaActual, 'yyyy-MM-dd') || '',
+          fechaFin: this.dataPipe.transform(fechaActual, 'yyyy-MM-dd') || '',
+        }
       };
-      console.log('asignacion ',peliculaSalaCine);
       this.peliculasSalasService.asignarPeliculaSala(peliculaSalaCine).subscribe(() => {
         this.cargarAsignaciones();
         this.asignacionForm.reset();

@@ -20,7 +20,8 @@ import { DatePipe } from '@angular/common';
     AppRoutingModule,
     FeaturesModule,
     SharedModule,
-    HttpClientModule
+    HttpClientModule,
+
 
 ],
   providers: [
