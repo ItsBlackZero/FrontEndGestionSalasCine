@@ -2,7 +2,7 @@
   <mat-sidenav #sidenav mode="side" opened>
     <mat-toolbar color="primary">Menú</mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item *ngIf="logueado" routerLink="/menu/dashboard" routerLinkActive="active-link">Dashboard</a>
+      <a mat-list-item routerLink="/menu/dashboard" routerLinkActive="active-link">Dashboard</a>
       <a mat-list-item *ngIf="logueado" routerLink="/menu/peliculas" routerLinkActive="active-link">Películas</a>
       <a mat-list-item *ngIf="logueado" routerLink="/menu/salas" routerLinkActive="active-link">Salas</a>
       <a mat-list-item *ngIf="logueado" routerLink="/menu/salas-cine" routerLinkActive="active-link">Asignar Películas</a>

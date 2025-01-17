@@ -25,7 +25,6 @@ export interface Asignacion {
 }
 
 export interface ApiRequestBodyPeliculaSalas {
-  body: {
     pelicula: {
       idPelicula: number;
     };
@@ -33,6 +32,5 @@ export interface ApiRequestBodyPeliculaSalas {
       idSalaCine: number;
     };
     fechaPublicacion: string;
-    fechaFin: string;  
-  };
+    fechaFin: string;
 }

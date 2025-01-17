@@ -5,23 +5,28 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { PeliculasComponent } from './components/peliculas/peliculas.component';
 import { SalasComponent } from './components/salas/salas.component';
 import { PeliculasSalaCineComponent } from './components/peliculas-sala-cine/peliculas-sala-cine.component';
+import { permisosGuard } from '../guards/permisos.guard';
 
 const routes: Routes = [
   {
     path:'dashboard',
-    component:DashboardComponent
+    component:DashboardComponent,
+    canActivate: [permisosGuard]
   },
   {
     path:'peliculas',
-    component:PeliculasComponent
+    component:PeliculasComponent,
+    canActivate:[permisosGuard]
   },
   {
     path:'salas',
-    component:SalasComponent
+    component:SalasComponent,
+    canActivate:[permisosGuard]
   },
   {
     path:'salas-cine',
-    component:PeliculasSalaCineComponent
+    component:PeliculasSalaCineComponent,
+    canActivate:[permisosGuard]
   },
 
 

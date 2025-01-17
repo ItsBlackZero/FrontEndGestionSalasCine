@@ -36,12 +36,9 @@ export class FormCrearPeliculaComponent {
   }
   updatePeliculaData() {
     this.peliculaData = {
-      body: {
-        idPelicula:Number(this.peliculaForm.get('idPelicula')?.value),
         nombre: this.peliculaForm.get('nombre')?.value,
         duracion: Number(this.peliculaForm.get('duracion')?.value),
         estado: Number(this.peliculaForm.get('estado')?.value),
-      }
     };
   }
 
@@ -49,7 +46,7 @@ export class FormCrearPeliculaComponent {
     this.updatePeliculaData()
     if (this.peliculaForm.valid) {
       if (this.editMode) {
-        this.peliculaService.editarPelicula(this.peliculaData!).subscribe(
+        this.peliculaService.editarPelicula(this.peliculaData!,Number(this.peliculaForm.get('idPelicula')?.value)).subscribe(
           respuesta => {
             this.toastr.success('Pelicula editada', 'Success',{
               timeOut: 3000,

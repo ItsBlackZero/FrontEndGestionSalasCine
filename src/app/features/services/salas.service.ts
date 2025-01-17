@@ -34,14 +34,16 @@ export class SalasService {
 
   agregarSalas(salas: ApiRequestBody): Observable<ApiRequestBody> {
 
+    console.log({salas});
+
     return this.http.post<ApiRequestBody>(this.salasUrl, salas);
   }
 
-  editarSalas(sala: ApiRequestBody): Observable<ApiRequestBody> {
+  editarSalas(sala: ApiRequestBody, id:number): Observable<ApiRequestBody> {
     console.log({ sala });
 
     return this.http.put<ApiRequestBody>(
-      `${this.editarSalaCine}/${sala.body.idSalaCine}`,
+      `${this.editarSalaCine}/${id}`,
       sala
     );
   }

@@ -28,6 +28,7 @@ export class AutenticacionComponent{
     if (this.loginForm.valid) {
       const { username, password } = this.loginForm.value;
       if (username === this.USUARIO_DEFECTO.usuario && password === this.USUARIO_DEFECTO.clave) {
+
         const logueado = true;
         this.sharedService.setLogueado(logueado);
         this.dialogRef.close();

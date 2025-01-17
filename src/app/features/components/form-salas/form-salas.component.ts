@@ -35,18 +35,16 @@ export class FormSalasComponent {
 
   updateSalaCine() {
     this.salaCineData = {
-      body: {
-        idSalaCine:Number(this.salasForm.get('idSalaCine')?.value),
+
         nombre: this.salasForm.get('nombre')?.value,
         estado: Number(this.salasForm.get('estado')?.value),
-      }
     };
   }
 
   onSubmit(): void {
     this.updateSalaCine();
     if (this.editMode) {
-      this.salasService.editarSalas(this.salaCineData!).subscribe(
+      this.salasService.editarSalas(this.salaCineData!,Number(this.salasForm.get('idSalaCine')?.value)).subscribe(
         respuesta => {
           this.toastr.success('Pelicula editada', 'Success',{
             timeOut: 3000,

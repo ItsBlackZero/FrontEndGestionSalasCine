@@ -12,10 +12,8 @@ export interface ApiResponsePelicula {
 }
 
 export interface ApiRequestBodyPelicula {
-  body: {
-    idPelicula?:number;
     nombre: string;
     duracion: number;
     estado: number;
-  };
+
 }

@@ -31,10 +31,17 @@ export class SharedService {
   private logueadoSubject = new BehaviorSubject<boolean>(false);
   logueado$ = this.logueadoSubject.asObservable();
 
-  constructor() { }
+  constructor() {
+    const token = localStorage.getItem('token_logueado');
+    if (token) {
+      this.logueadoSubject.next(true);
+    }
+  }
 
   setLogueado(logueado:boolean):void{
     this.logueadoSubject.next(logueado)
+    const token = 'token_confirmado';
+    localStorage.setItem('token_logueado', token);
   }
   get isLogueado(): boolean {
     return this.logueadoSubject.value;

@@ -137,7 +137,6 @@ export class PeliculasSalaCineComponent {
     if (this.asignacionForm.valid) {
       const asignacion = this.asignacionForm.value;
       const peliculaSalaCine: ApiRequestBodyPeliculaSalas = {
-        body: {
           pelicula: {
             idPelicula: asignacion.idPelicula,
           },
@@ -146,7 +145,6 @@ export class PeliculasSalaCineComponent {
           },
           fechaPublicacion: this.dataPipe.transform(fechaActual, 'yyyy-MM-dd') || '',
           fechaFin: this.dataPipe.transform(fechaActual, 'yyyy-MM-dd') || '',
-        }
       };
       this.peliculasSalasService.asignarPeliculaSala(peliculaSalaCine).subscribe(() => {
         this.cargarAsignaciones();

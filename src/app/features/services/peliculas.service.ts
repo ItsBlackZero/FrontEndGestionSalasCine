@@ -39,9 +39,9 @@ export class PeliculasService {
     return this.http.post<ApiRequestBodyPelicula>(this.peliculaUrl, pelicula);
   }
 
-  editarPelicula(pelicula: ApiRequestBodyPelicula): Observable<ApiRequestBodyPelicula> {
+  editarPelicula(pelicula: ApiRequestBodyPelicula, id:number): Observable<ApiRequestBodyPelicula> {
     return this.http.put<ApiRequestBodyPelicula>(
-      `${this.editarPeliculaUrl}/${pelicula.body.idPelicula}`,
+      `${this.editarPeliculaUrl}/${id}`,
       pelicula
     );
   }

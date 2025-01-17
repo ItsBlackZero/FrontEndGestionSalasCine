@@ -10,9 +10,6 @@ export interface ApiResponse {
     data: SalaCine[];
 }
 export interface ApiRequestBody {
-  body: {
-    idSalaCine?:number;
     nombre: string;
     estado: number;
-  };
 }
